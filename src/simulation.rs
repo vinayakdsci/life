@@ -29,27 +29,44 @@ impl<'a> Simulation<'a> {
     pub fn count_live_neighbors(&self, row: i32, col: i32) -> i32 {
         let mut live_neighbors: i32 = 0;
 
-        let offsets = [
-            (-1, 0),
-            (1, 0),
-            (0, -1),
-            (0, 1),
-            (-1, -1),
-            (-1, 1),
-            (1, -1),
-            (1, 1),
-        ];
-
-        for (offset_x, offset_y) in offsets {
-            let n_row = (row + offset_x + self.grid.get_row_count()) % self.grid.get_row_count();
-            let n_col = (col + offset_y + self.grid.get_col_count()) % self.grid.get_col_count();
-            live_neighbors += self.grid.get_value(n_row, n_col);
+        for i in row - 1..=row + 1 {
+            for j in col - 1..=col + 1 {
+                if i != row || j != col {
+                    let n_row = (i + self.grid.get_row_count()) % self.grid.get_row_count();
+                    let n_col = (j + self.grid.get_col_count()) % self.grid.get_col_count();
+                    live_neighbors += self.grid.get_value(n_row, n_col);
+                }
+            }
         }
 
         live_neighbors
     }
 
-    pub fn randomize(&mut self) {
+    pub fn randomize(&mut self, preset: Option<String>) {
+        if let Some(pre) = preset {
+            match &pre[..] {
+                "pentomino" => {
+                    self.grid.fill_pentomino();
+                    return;
+                }
+                "glider" => {
+                    self.grid.fill_glider();
+                    return;
+                }
+                "spaceship" => {
+                    self.grid.fill_light_spaceship();
+                    return;
+                }
+                _ => {
+                    self.rl.trace_log(
+                        TraceLogLevel::LOG_ERROR,
+                        "Unsupported preset. Availaible presets are { glider, spaceship, pentomino }."
+                    );
+                    self.rl
+                        .trace_log(TraceLogLevel::LOG_WARNING, "Defaulting to random fill.");
+                }
+            }
+        }
         self.grid.fill_randomly(self.rl);
     }
 

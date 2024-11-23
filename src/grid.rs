@@ -14,7 +14,7 @@ impl Grid {
             rows: h / cs,
             cols: w / cs,
             cell_size: cs,
-            cells: vec![vec![0; h as usize / cs as usize]; w as usize / cs as usize],
+            cells: vec![vec![0; w as usize / cs as usize]; h as usize / cs as usize],
         };
     }
 
@@ -53,8 +53,8 @@ impl Grid {
                 rd.draw_rectangle(
                     col * self.cell_size,
                     row * self.cell_size,
-                    self.cell_size - 1,
-                    self.cell_size - 1,
+                    self.cell_size,
+                    self.cell_size,
                     color,
                 );
             }
@@ -85,6 +85,51 @@ impl Grid {
                     self.cells[row as usize][col as usize] = 1;
                 }
             }
+        }
+    }
+
+    pub fn fill_pentomino(&mut self) {
+        let row = self.rows / 2;
+        let col = self.cols / 2;
+
+        // Fill the R-Pentomino pattern.
+        self.cells[row as usize][col as usize] = 1;
+        self.cells[row as usize - 1][col as usize] = 1;
+        self.cells[row as usize][col as usize - 1] = 1;
+        self.cells[row as usize + 1][col as usize] = 1;
+        self.cells[row as usize - 1][col as usize + 1] = 1;
+    }
+
+    pub fn fill_glider(&mut self) {
+        let row = self.rows / 2;
+        let col = self.cols / 2;
+
+        // Fill a glider
+        self.cells[row as usize - 1][col as usize] = 1;
+        self.cells[row as usize + 1][col as usize] = 1;
+        self.cells[row as usize + 1][col as usize - 1] = 1;
+        self.cells[row as usize + 1][col as usize + 1] = 1;
+        self.cells[row as usize][col as usize + 1] = 1;
+    }
+
+    pub fn fill_light_spaceship(&mut self) {
+        for i in 1..4 {
+            let row = self.rows / (i + 1);
+            let col = self.cols / (i + 1);
+
+            // Fill a light-spaceship.
+            self.cells[row as usize - 1][col as usize] = 1;
+            self.cells[row as usize - 2][col as usize] = 1;
+            self.cells[row as usize - 2][col as usize + 1] = 1;
+            self.cells[row as usize - 1][col as usize + 1] = 1;
+            self.cells[row as usize - 1][col as usize + 2] = 1;
+            self.cells[row as usize - 1][col as usize - 1] = 1;
+            self.cells[row as usize][col as usize - 1] = 1;
+            self.cells[row as usize][col as usize - 2] = 1;
+            self.cells[row as usize][col as usize + 1] = 1;
+            self.cells[row as usize][col as usize + 2] = 1;
+            self.cells[row as usize + 1][col as usize] = 1;
+            self.cells[row as usize + 1][col as usize - 1] = 1;
         }
     }
 }
