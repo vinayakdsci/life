@@ -29,15 +29,15 @@ struct Cli {
 fn main() {
     let cli = Cli::parse();
 
-    let (mut rl, thread) = raylib::init()
-        .size(GRID_H, GRID_W)
-        .title("Welcome to the Game Of Life")
-        .build();
-
-    let fps = if let Some(f) = cli.fps { f } else { 18 };
     let height = if let Some(h) = cli.height { h } else { 1000 };
     let width = if let Some(w) = cli.width { w } else { 1000 };
+    let fps = if let Some(f) = cli.fps { f } else { 18 };
     let cellsize = if let Some(cs) = cli.cellsize { cs } else { 10 };
+
+    let (mut rl, thread) = raylib::init()
+        .size(height, width)
+        .title("Welcome to the Game Of Life")
+        .build();
 
     rl.set_target_fps(fps);
     let mut simulation = Simulation::new(height, width, cellsize, &mut rl);
