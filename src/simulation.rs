@@ -45,8 +45,8 @@ impl<'a> Simulation<'a> {
     pub fn randomize(&mut self, preset: Option<String>) {
         if let Some(pre) = preset {
             match &pre[..] {
-                "pentomino" => {
-                    self.grid.fill_pentomino();
+                "random" => {
+                    self.grid.fill_randomly(self.rl);
                     return;
                 }
                 "glider" => {
@@ -57,17 +57,20 @@ impl<'a> Simulation<'a> {
                     self.grid.fill_light_spaceship();
                     return;
                 }
+                "pentomino" => 'pentomino: {
+                    break 'pentomino;
+                }
                 _ => {
                     self.rl.trace_log(
                         TraceLogLevel::LOG_ERROR,
-                        "Unsupported preset. Availaible presets are { glider, spaceship, pentomino }."
+                        "Unsupported preset. Availaible presets are { pentomino (default), glider, spaceship, random }."
                     );
                     self.rl
-                        .trace_log(TraceLogLevel::LOG_WARNING, "Defaulting to random fill.");
+                        .trace_log(TraceLogLevel::LOG_WARNING, "Defaulting to R-Pentomino fill");
                 }
             }
         }
-        self.grid.fill_randomly(self.rl);
+        self.grid.fill_pentomino();
     }
 
     pub fn update(&mut self) {
