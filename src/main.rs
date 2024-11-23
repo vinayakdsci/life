@@ -1,15 +1,7 @@
 pub mod grid;
 pub mod simulation;
-// use raylib::prelude::*;
 use clap::Parser;
 use simulation::Simulation;
-
-// const WHITE: [i32; 4] = [255, 255, 255, 255];
-
-const _FPS: u32 = 20;
-
-const GRID_H: i32 = 800;
-const GRID_W: i32 = 1200;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]

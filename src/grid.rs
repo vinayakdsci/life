@@ -46,7 +46,6 @@ impl Grid {
                 let color = if self.cells[row as usize][col as usize] == 1 {
                     raylib::color::Color::BLACK
                 } else {
-                    // raylib::color::rcolor(50, 50, 50, 255)
                     raylib::color::Color::WHITE
                 };
 

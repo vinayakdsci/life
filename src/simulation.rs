@@ -94,7 +94,7 @@ impl<'a> Simulation<'a> {
                 }
             }
         }
-        // TODO (vinayakdsci): Try to remove this clone
+        // TODO (vinayakdsci): Try to remove this clone operation.
         self.grid = self.tmp_grid.to_owned();
     }
 }
