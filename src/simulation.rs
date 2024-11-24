@@ -2,9 +2,10 @@ use crate::grid::*;
 use raylib::prelude::*;
 
 pub struct Simulation<'a> {
-    grid: Grid,
+    pub grid: Grid,
     tmp_grid: Grid,
     pub rl: &'a mut RaylibHandle,
+    running: bool,
 }
 
 impl<'a> Simulation<'a> {
@@ -13,6 +14,7 @@ impl<'a> Simulation<'a> {
             grid: Grid::new(h, w, cs),
             tmp_grid: Grid::new(h, w, cs),
             rl,
+            running: false,
         }
     }
 
@@ -74,6 +76,11 @@ impl<'a> Simulation<'a> {
     }
 
     pub fn update(&mut self) {
+        // Only update when the simulation is running.
+        if !self.running {
+            return;
+        }
+
         for row in 0..self.grid.get_row_count() {
             for col in 0..self.grid.get_col_count() {
                 let live_neighbors: i32 = self.count_live_neighbors(row, col);
@@ -96,5 +103,39 @@ impl<'a> Simulation<'a> {
         }
         // TODO (vinayakdsci): Try to remove this clone operation.
         self.grid = self.tmp_grid.to_owned();
+    }
+
+    pub fn clear_grid(&mut self) {
+        if !self.running {
+            self.grid.clear()
+        }
+    }
+
+    pub fn is_running(&self) -> bool {
+        self.running == true
+    }
+
+    pub fn toggle_cell(&mut self, row: i32, col: i32) {
+        // Only toggle when the simulation is not running.
+        if !self.running {
+            let current_value = if self.grid.get_value(row, col) == 1 {
+                0
+            } else {
+                1
+            };
+            self.grid.set_cell_value(row, col, current_value);
+        }
+    }
+
+    pub fn start(&mut self) {
+        self.running = true;
+    }
+
+    pub fn stop(&mut self) {
+        self.running = false;
+    }
+
+    pub fn toggle_running_state(&mut self) {
+        self.running = !self.running;
     }
 }

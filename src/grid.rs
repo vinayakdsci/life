@@ -60,6 +60,12 @@ impl Grid {
         }
     }
 
+    pub fn clear(&mut self) {
+        for row in &mut self.cells {
+            row.fill(0);
+        }
+    }
+
     pub fn get_value(&self, row: i32, col: i32) -> i32 {
         self.cells[row as usize][col as usize]
     }
