@@ -32,8 +32,20 @@ Example:
 $ cargo run --release -- --preset glider --height 800 --width 1200 --cellsize 4 --fps 20
 ```
 
+##### Interactivity
+The simulation allows the player to interact with it:
+
+- Pressing \<SPACE\> will toggle the running state of the simulation.
+- Pressing \<F\> will make the simulation faster (increase fps) up till 30 fps.
+- Pressing \<S\> will make the simulation slower (decrease fps) down till 5 fps.
+- Pressing \<TAB\> when the simulation is stopped will clear the grid and fill it with R-Pentomino.
+- Pressing \<C\> will clear the grid when the simulation is stopped.
+- \<LEFT_CLICK\> will toggle the cell when the simulation is stopped. If the cell is live, it will die, and be reborn if it is dead.
+
+By default, the simulation will start with the R-Pentomino pattern, but will not be running &ndash; to begin the simulation, press \<SPACE\>.
+
 ##### TODO
 I would like to still implement a number of things:
 1. Optimizations: Currently the state update logic uses a temporary grid that is copied back into the original grid. This should be changed.
-2. Interaction: Make the GUI more interactive. Allow the player to toggle cells by mouse-clicks, and to stop and start the animation at will.
-3. Aesthetics: Make the GUI more pleasing, possibly by implementing better color combinations.
+2. Aesthetics: Make the GUI more pleasing, possibly by implementing better color combinations.
+3. ~~Interaction: Make the GUI more interactive. Allow the player to toggle cells by mouse-clicks, and to stop and start the animation at will.~~
